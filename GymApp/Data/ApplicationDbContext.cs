@@ -9,6 +9,8 @@ public class ApplicationDbContext : IdentityDbContext<User, IdentityRole, string
 {
     public DbSet<Exercise> Exercises { get; set; }
     public DbSet<BodyPart> BodyParts { get; set; }
+    public DbSet<Training> Trainings { get; set; }
+    public DbSet<TrainingExercises> TrainingExercises { get; set; }
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
@@ -29,6 +31,18 @@ public class ApplicationDbContext : IdentityDbContext<User, IdentityRole, string
             .WithMany()
             .HasForeignKey(e => e.RecordHolderId)
             .IsRequired(false);
+
+        modelBuilder.Entity<Training>()
+            .HasMany(t => t.TrainingExercises)
+            .WithOne(ct => ct.Training)
+            .HasForeignKey(ct => ct.TrainingId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<TrainingExercises>()
+            .HasOne(ct => ct.Exercise)
+            .WithMany()
+            .HasForeignKey(ct => ct.ExerciseId)
+            .OnDelete(DeleteBehavior.Restrict);
 
 
         base.OnModelCreating(modelBuilder);

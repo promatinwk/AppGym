@@ -1,0 +1,74 @@
+﻿@model GymApp.Models.Training
+
+<h2>Create</h2>
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label asp-for="Name" class="control-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <h3>Exercises</h3>
+    <div id="exercises-container">
+        <!-- Display added exercises -->
+        @if (Model.TrainingExercises != null)
+        {
+            @for (var i = 0; i < Model.TrainingExercises.Count; i++)
+            {
+
+                if (Model.TrainingExercises[i] != null)
+                {
+                    <div>
+                        <input type="hidden" asp-for="TrainingExercises[i].ExerciseId" />
+                        <input type="number" asp-for="TrainingExercises[i].SeriesCount" />
+                    </div>
+                }
+            }
+        }
+    </div>
+
+    <div class="form-group">
+        <label>Select Exercise</label>
+        <select id="selectedExercise" class="form-control">
+            <option value="">-- Select Exercise --</option>
+            @foreach (var exercise in ViewBag.Exercises)
+            {
+                <option value="@exercise.Id">@exercise.Name</option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>Series Count</label>
+        <input id="selectedSeriesCount" type="number" class="form-control" />
+    </div>
+
+    <button type="button" onclick="addExercise()">Add Exercise</button>
+
+    <input type="submit" value="Create" class="btn btn-primary" />
+</form>
+
+<script>
+    function addExercise() {
+        var selectedExerciseId = $("#selectedExercise").val();
+        var selectedSeriesCount = $("#selectedSeriesCount").val();
+
+        if (selectedExerciseId && selectedSeriesCount) {
+            var exerciseName = $("#selectedExercise option:selected").text();
+            var exercise = exerciseName + " - " + selectedSeriesCount + " series";
+
+            $("#exercises-container").append("<p>" + exercise + "</p>");
+
+            // Store selected exercise in TempData
+            var tempTrainingExercises = @Html.Raw(Json.Serialize(TempData["TempTrainingExercises"] ?? new List<TrainingExercises>()));
+            tempTrainingExercises.push({ ExerciseId: selectedExerciseId, SeriesCount: selectedSeriesCount, ExerciseName: exerciseName });
+
+            TempData["TempTrainingExercises"] = tempTrainingExercises;
+
+            // Clear input values
+            $("#selectedExercise").val("");
+            $("#selectedSeriesCount").val("");
+        }
+    }
+</script>
