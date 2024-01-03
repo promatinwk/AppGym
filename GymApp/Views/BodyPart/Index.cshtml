@@ -1,0 +1,22 @@
+﻿@model List<BodyPart>
+
+<h1>Części ciała:</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Nazwa:</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var bodyPart in Model)
+        {
+            <tr>
+                <td>@bodyPart.Id</td>
+                <td>@bodyPart.Name</td>
+                <td><a asp-controller="Exercise" asp-action="Index" asp-route-bodyPartId="@bodyPart.Id">Pokaż ćwiczenia</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
