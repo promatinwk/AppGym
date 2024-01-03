@@ -7,7 +7,7 @@ namespace GymApp.Models
         public string Name { get; set; }
         public int BodyPartId { get; set; }
         public BodyPart BodyPart { get; set; }
-        public string RecordHolderId { get; set; }
+        public string? RecordHolderId { get; set; }
         public User RecordHolder { get; set; }
     }
 }

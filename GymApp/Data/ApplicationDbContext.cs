@@ -1,10 +1,11 @@
 ﻿using GymApp.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace GymApp.Data;
 
-public class ApplicationDbContext : IdentityDbContext<User>
+public class ApplicationDbContext : IdentityDbContext<User, IdentityRole, string>
 {
     public DbSet<Exercise> Exercises { get; set; }
     public DbSet<BodyPart> BodyParts { get; set; }
@@ -27,8 +28,9 @@ public class ApplicationDbContext : IdentityDbContext<User>
             .HasOne(e => e.RecordHolder)
             .WithMany()
             .HasForeignKey(e => e.RecordHolderId)
+            .IsRequired(false);
 
-            
+
         base.OnModelCreating(modelBuilder);
     }
 
