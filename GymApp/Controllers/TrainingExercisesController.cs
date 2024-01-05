@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GymApp.Data;
+using GymApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-
+// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace GymApp.Controllers
 {
@@ -21,46 +22,36 @@ namespace GymApp.Controllers
 
         public IActionResult Create(int trainingId)
         {
-            var training = _context.Trainings.Find(trainingId);
-
-            if (training == null)
-            {
-                return NotFound();
-            }
-
             ViewBag.Exercises = _context.Exercises.ToList();
             ViewBag.TrainingId = trainingId;
-
             return View();
         }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(int trainingId, int[] selectedExerciseIds, int[] seriesCounts)
+        public async Task<IActionResult> Create([Bind("TrainingId,ExerciseId,SeriesCount")] TrainingExercises trainingExercises)
         {
-            var training = _context.Trainings.Include(t => t.User).FirstOrDefault(t => t.Id == trainingId);
-
-            if (training == null)
+            bool exerciseExists = _context.TrainingExercises
+                .Any(te => te.TrainingId == trainingExercises.TrainingId && te.ExerciseId == trainingExercises.ExerciseId);
+            if (!exerciseExists)
             {
-                return NotFound();
-            }
-
-            if (selectedExerciseIds != null && selectedExerciseIds.Length > 0)
-            {
-                for (int i=0; i<selectedExerciseIds.Length; i++)
-                {
-                    _context.TrainingExercises.Add(new Models.TrainingExercises
-                    {
-                        TrainingId = trainingId,
-                        ExerciseId = selectedExerciseIds[i],
-                        SeriesCount = seriesCounts[i]
-                    }) ;
-                }
+                // Ćwiczenie nie istnieje, można dodać nowy wpis
+                _context.TrainingExercises.Add(trainingExercises);
                 await _context.SaveChangesAsync();
             }
-            return RedirectToAction("Index", "Training");
+            else
+            {
+                // Ćwiczenie już istnieje, wykonaj odpowiednie kroki (np. wyświetl komunikat)
+                ModelState.AddModelError("ExerciseId", "To ćwiczenie już istnieje w tym treningu.");
+                // Możesz również ustawić ViewBag lub ViewData, aby przekazać komunikat do widoku
+            }
 
+
+            return RedirectToAction("Create", "TrainingExercises",new { trainingId = trainingExercises.TrainingId });
+           
+
+           
         }
 
     }

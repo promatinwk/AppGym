@@ -1,0 +1,22 @@
+﻿@model List<TrainingExercises>
+
+<h2>Details</h2>
+
+@if (Model != null && Model.Any())
+{
+    <h3>Ćwiczenia dla treningu o ID: @ViewBag.TrainingId</h3>
+    <ul>
+        @foreach (var trainingExercise in Model)
+        {
+            <li>
+                <strong>@trainingExercise.Exercise.Name</strong> - @trainingExercise.SeriesCount serii
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>Nie znaleziono ćwiczeń przypisanych do tego treningu.</p>
+}
+
+<a asp-action="Create" asp-controller="TrainingExercises" asp-route-trainingId="@ViewBag.TrainingId">Dodaj ćwiczenia</a>

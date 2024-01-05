@@ -1,1 +1,22 @@
-﻿
+﻿@model GymApp.Models.TrainingExercises
+
+<h2>Dodaj ćwiczenie dla treningu: </h2>
+
+<form asp-action="Create" asp-controller="TrainingExercises" method="post">
+    <input type="hidden" name="TrainingId" value="@ViewBag.TrainingId" />
+    <div>
+        <label for="exerciseId">Exercise:</label>
+        <select asp-for="ExerciseId" asp-items="new SelectList(ViewBag.Exercises, nameof(Exercise.Id), nameof(Exercise.Name))"></select>
+    </div>
+    <div>
+        <label for="seriesCount">Series Count:</label>
+        <input type="number" asp-for="SeriesCount" />
+    </div>
+    <div>
+        <input type="submit" value="Save" class="btn btn-primary" />
+    </div>
+</form>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+}

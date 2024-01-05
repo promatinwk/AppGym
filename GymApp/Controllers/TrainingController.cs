@@ -60,8 +60,23 @@ namespace GymApp.Controllers
               
                 }
 
-           
-        
+
+                public IActionResult Details(int id)
+                {
+                        var trainingExercises = _context.TrainingExercises
+                        .Include(te => te.Exercise) // Załaduj dane ćwiczenia
+                        .Where(te => te.TrainingId == id)
+                        .ToList();
+
+                        ViewBag.TrainingId = id; // Przekaż id treningu do widoku, aby można było dodać nowe ćwiczenia
+
+                        return View(trainingExercises);
+        }
+
+
+
+
+
 
 
 
