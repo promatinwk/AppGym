@@ -24,10 +24,12 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.CreateDate)
                 </td>
+                
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edytuj</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Pokaż szczegóły treningu</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Usuń trening</a> |
+                    <a asp-action="Create" asp-controller="TrainingExercises" asp-route-trainingId="@item.Id">Dodaj ćwiczenia do treningu</a>
                 </td>
             </tr>
         }

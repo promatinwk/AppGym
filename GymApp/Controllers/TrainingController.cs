@@ -31,60 +31,39 @@ namespace GymApp.Controllers
 
             return View(trainings);
         }
-
-        public IActionResult Create()
-        {
-            var viewModel = new Training();
-            viewModel.TrainingExercises = new List<TrainingExercises>(); // Inicjalizacja listy
-
-            // Dodajemy dostępne ćwiczenia do ViewBag.Exercises
-            ViewBag.Exercises = _context.Exercises.ToList();
-
-            return View(viewModel);
-        }
-
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name")] Training training)
-        {
-            if (ModelState.IsValid)
-            {
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                training.UserId = userId;
-                training.CreateDate = DateTime.Now;
-
-                _context.Add(training);
-                await _context.SaveChangesAsync();
-
-                // Sprawdzenie, czy training.TrainingExercises nie jest nullem
-                if (training.TrainingExercises != null)
+        
+                public IActionResult Create()
                 {
-                    // Dodawanie TrainingExercises do bazy danych
-                    foreach (var exercise in training.TrainingExercises)
-                    {
-                        // Sprawdzenie, czy exercise nie jest nullem
-                        if (exercise != null)
-                        {
-                            _context.TrainingExercises.Add(new TrainingExercises
-                            {
-                                TrainingId = training.Id,
-                                ExerciseId = exercise.ExerciseId,
-                                SeriesCount = exercise.SeriesCount
-                            });
-                        }
-                    }
+                    var viewModel = new Training();
+                    viewModel.TrainingExercises = new List<TrainingExercises>(); // Inicjalizacja listy
+
+                    return View(viewModel);
                 }
 
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
 
-            ViewBag.Exercises = ViewBag.Exercises ?? new List<Exercise>();
-            //ViewBag.Exercises = await _context.Exercises.ToListAsync();
-            return View(training);
-        }
+                [HttpPost]
+                [ValidateAntiForgeryToken]
+                public async Task<IActionResult> Create([Bind("Name")] Training training)
+                {
+                    
+                   
+                        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                        training.UserId = userId;
+                        training.CreateDate = DateTime.Now;
+
+                        _context.Add(training);
+                        await _context.SaveChangesAsync();
+
+                    
+                        return RedirectToAction(nameof(Index));
+
+              
+                }
+
+           
+        
+
+
 
     }
 }
-
