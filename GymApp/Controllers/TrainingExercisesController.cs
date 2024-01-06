@@ -51,6 +51,8 @@ namespace GymApp.Controllers
             return RedirectToAction("Create", "TrainingExercises",new { trainingId = trainingExercises.TrainingId });
 
         }
+
+
         public IActionResult Edit(int id)
         {
             var trainingExercise = _context.TrainingExercises.Find(id);

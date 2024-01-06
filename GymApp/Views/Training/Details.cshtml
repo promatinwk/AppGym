@@ -1,21 +1,33 @@
 ﻿@model List<TrainingExercises>
 
-<h2>Details</h2>
+<h2>Szczegóły treningu</h2>
 
 @if (Model != null && Model.Any())
 {
-    <h3>Ćwiczenia dla treningu o ID: @ViewBag.TrainingId</h3>
-    <ul>
-        @foreach (var trainingExercise in Model)
-        {
-            <li>
-                <span><strong>@trainingExercise.Exercise.Name</strong> - @trainingExercise.SeriesCount serii</span> | <a asp-action="Edit" asp-controller="TrainingExercises" asp-route-id="@trainingExercise.Id">Edytuj</a> | <form asp-action="Delete" asp-controller="TrainingExercises" method="post" class="delete-form">
-    <input type="hidden" name="trainingExerciseId" value="@trainingExercise.Id" />
-    <button type="submit" class="btn btn-link text-danger">Usuń</button>
-</form>|
-            </li>
-        }
-    </ul>
+    <h3>Ćwiczenia dla treningu o id: @ViewBag.TrainingId</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Nazwa ćwiczenia</th>
+                <th>Ilość Serii</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var trainingExercise in Model)
+            {
+                <tr>
+                    <td>@trainingExercise.Exercise.Name</td>
+                    <td>@trainingExercise.SeriesCount<span> serii</span></td>
+                    <td>
+                        <a asp-action="Edit" asp-controller="TrainingExercises" asp-route-id="@trainingExercise.Id">Edytuj</a> |
+                        <a asp-action="Delete" asp-controller="TrainingExercises" asp-route-trainingExerciseId="@trainingExercise.Id" class="delete-link" onclick="return confirm('Czy na pewno chcesz usunąć?')">Usuń</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+   
 }
 else
 {

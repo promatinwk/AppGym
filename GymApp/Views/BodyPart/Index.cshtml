@@ -1,22 +1,23 @@
 ﻿@model List<BodyPart>
+<link rel="stylesheet" href="~/css/BodyPart.css" />
 
-<h1>Części ciała:</h1>
+<div class="viewsBody">
+    <h1 class="title">CZĘŚCI CIAŁA:</h1>
 
-<table>
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Nazwa:</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var bodyPart in Model)
-        {
+    <table>
+        <thead>
             <tr>
-                <td>@bodyPart.Id</td>
-                <td>@bodyPart.Name</td>
-                <td><a asp-controller="Exercise" asp-action="Index" asp-route-bodyPartId="@bodyPart.Id">Pokaż ćwiczenia</a></td>
+                <th>Nazwa:</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var bodyPart in Model)
+            {
+                <tr>
+                    <td>@bodyPart.Name</td>
+                    <td><a asp-controller="Exercise" asp-action="Index" asp-route-bodyPartId="@bodyPart.Id">Pokaż ćwiczenia</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

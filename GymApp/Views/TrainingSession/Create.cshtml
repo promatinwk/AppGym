@@ -1,19 +1,18 @@
 ﻿@model GymApp.Models.TrainingSession
 
-<h2>Create Training Session</h2>
+<h2>Tworzenie sesji treningowej:</h2>
 
 <form asp-action="Create" method="post">
     <div class="form-group">
-        <label asp-for="SessionDate" class="control-label"></label>
+        <label asp-for="SessionDate" class="control-label">Data odbycia sesji:</label>
         <input asp-for="SessionDate" class="form-control" type="datetime-local" />
         <span asp-validation-for="SessionDate" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label asp-for="TrainingId" class="control-label"></label>
+        <label asp-for="TrainingId" class="control-label">Wybierz trening:</label>
         <select asp-for="TrainingId" class="form-control" asp-items="ViewBag.TrainingId"></select>
-        <span asp-validation-for="TrainingId" class="text-danger"></span>
     </div>
 
-    <button type="submit" class="btn btn-primary">Create</button>
+    <button type="submit" class="btn btn-dark">Dodaj sesję</button>
 </form>

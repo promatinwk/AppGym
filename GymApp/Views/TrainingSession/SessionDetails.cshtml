@@ -1,0 +1,41 @@
+﻿@model List<WeightRecord>
+
+<h2>Szczegóły sesji treningowej</h2>
+
+@if (Model != null && Model.Count > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Ćwiczenie</th>
+                <th>Seria</th>
+                <th>Waga (kg)</th>
+                <!-- Dodaj inne kolumny, jeśli to konieczne -->
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var record in Model)
+            {
+                <tr>
+                    <td>
+                        @if (record.Exercise != null)
+                        {
+                            @record.Exercise.Name
+                        }
+                        else
+                        {
+                            <span>Nieznane ćwiczenie</span>
+                        }
+                    </td>
+                    <td>@record.SeriesCount</td>
+                    <td>@record.Weight</td>
+                    <!-- Dodaj inne komórki, jeśli to konieczne -->
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Brak danych do wyświetlenia.</p>
+}

@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "Błąd";
+}
+
+<h1>Błąd</h1>
+<p>Ta sesja została już skonfigurowana. Zobacz szczegóły sesji.</p>
+
+
+@{
+    int? sessionId = TempData["SessionId"] as int?;
+}
+
+<a asp-action="SessionDetails" asp-controller="TrainingSession" asp-route-sessionId="@sessionId">
+    <button type="button">Zobacz szczegóły sesji</button>
+</a>

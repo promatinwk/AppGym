@@ -1,0 +1,9 @@
+﻿@model GymApp.Models.TrainingSession
+
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" name="sessionId" value="@Model.Id" />
+    <button type="submit">Usuń</button>
+</form>
+
+

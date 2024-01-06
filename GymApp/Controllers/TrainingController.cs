@@ -1,11 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using GymApp.Data;
 using GymApp.Models;
 
@@ -32,46 +28,68 @@ namespace GymApp.Controllers
             return View(trainings);
         }
         
-                public IActionResult Create()
-                {
-                    var viewModel = new Training();
-                    viewModel.TrainingExercises = new List<TrainingExercises>(); // Inicjalizacja listy
+        public IActionResult Create()
+        { 
+            var viewModel = new Training();
+            viewModel.TrainingExercises = new List<TrainingExercises>(); // Inicjalizacja listy
 
-                    return View(viewModel);
-                }
+            return View(viewModel);
+        }
 
 
-                [HttpPost]
-                [ValidateAntiForgeryToken]
-                public async Task<IActionResult> Create([Bind("Name")] Training training)
-                {
-                    
-                   
-                        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                        training.UserId = userId;
-                        training.CreateDate = DateTime.Now;
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("Name")] Training training)
+        {
 
-                        _context.Add(training);
-                        await _context.SaveChangesAsync();
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            training.UserId = userId;
+            training.CreateDate = DateTime.Now;
 
-                    
-                        return RedirectToAction(nameof(Index));
+            _context.Add(training);
+            await _context.SaveChangesAsync();
+
+  
+            return RedirectToAction(nameof(Index));
 
               
-                }
+        }
 
 
-                public IActionResult Details(int id)
-                {
-                        var trainingExercises = _context.TrainingExercises
-                        .Include(te => te.Exercise) // Załaduj dane ćwiczenia
-                        .Where(te => te.TrainingId == id)
-                        .ToList();
+         public IActionResult Details(int id)
+         {
+            var trainingExercises = _context.TrainingExercises
+                .Include(te => te.Exercise)
+                .Where(te => te.TrainingId == id)
+                .ToList();
 
-                        ViewBag.TrainingId = id; // Przekaż id treningu do widoku, aby można było dodać nowe ćwiczenia
+                 ViewBag.TrainingId = id; // Przekazujemy id treningu do widoku, aby można było dodać nowe ćwiczenia
 
-                        return View(trainingExercises);
-                  }
+                 return View(trainingExercises);
+         }
+
+         [HttpPost]
+         [ValidateAntiForgeryToken]
+         public async Task<IActionResult> Delete(int id)
+         {
+            var training = await _context.Trainings
+                        .Include(t => t.TrainingExercises)
+                        .FirstOrDefaultAsync(t => t.Id == id);
+
+            if (training == null)
+            {
+               return NotFound();
+            }
+
+            // Usuwanie powiązanych TrainingExercises
+            _context.TrainingExercises.RemoveRange(training.TrainingExercises);
+
+            _context.Trainings.Remove(training);
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+    }
 
        
 

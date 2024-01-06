@@ -1,0 +1,36 @@
+﻿@model List<WeightRecord>
+<link rel="stylesheet" href="~/css/ConfigureSession.css" />
+<h2>Konfiguruj trening</h2>
+<p>Podaj obciążenie w KG dla poszczególnych serii każdego ćwiczenia</p>
+
+<form method="post">
+    @if (ViewBag.Exercises != null)
+    {
+        var index = 0;
+        for (var i = 0; i < ViewBag.Exercises.Count; i++)
+        {
+            var record = ViewBag.Exercises[i];
+
+            for (var j = 1; j <= record.SeriesCount; j++)
+            {
+                <div class="weightDiv">
+                <label for="WeightRecords[@index].Weight">
+                    @record.Exercise.Name | Seria: @j :
+                </label>
+                <input type="number" name="WeightRecords[@index].Weight" required />
+                </div>
+                <input type="hidden" name="WeightRecords[@index].TrainingSessionId" value="@ViewBag.SessionId" />
+                <input type="hidden" name="WeightRecords[@index].ExerciseId" value="@record.ExerciseId" />
+                <input type="hidden" name="WeightRecords[@index].SeriesCount" value="@j" />
+
+                <br />
+
+                index++;
+            }
+        }
+    }
+
+    <button type="submit">Konfiguruj</button>
+</form>
+
+

@@ -1,23 +1,35 @@
 ﻿@model List<TrainingSession>
+    
 
-<h2>Moje sesje treningowe</h2>
+    <h2>Moje sesje treningowe</h2>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Data sesji</th>
-            <th>Nazwa treningu</th>
-            <!-- Dodaj inne kolumny, jeśli to konieczne -->
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var session in Model)
-        {
+    <table class="table">
+        <thead>
             <tr>
-                <td>@session.SessionDate</td>
-                <td>@session.Training.Name</td>
-                <!-- Dodaj inne komórki, jeśli to konieczne -->
+                <th>Data wykonania sesji treningowej</th>
+                <th>Nazwa treningu</th>
+                <th>Konfiguracja sesji</th>
+                <th>Szczegóły</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var session in Model)
+            {
+                <tr>
+                    <td>@session.SessionDate</td>
+                    <td>@session.Training.Name</td>
+                    <td><a href="@(Url.Action("ConfigureSession", "TrainingSession", new { sessionId = session.Id }))">Konfiguruj sesje</a></td>
+                    <td><a asp-controller="TrainingSession" asp-action="SessionDetails" asp-route-sessionId="@session.Id">Szczegóły</a></td>
+                    <td>
+                        @using (Html.BeginForm("Delete", "TrainingSession", new { id = session.Id }, FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+                            <button type="submit">Usuń TrainingSession</button>
+                        }
+                    </td>
+
+
+                </tr>
+            }
+        </tbody>
+    </table>

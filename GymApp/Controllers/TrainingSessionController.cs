@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using GymApp.Data;
+﻿using GymApp.Data;
 using GymApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -50,7 +46,7 @@ namespace GymApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task <IActionResult> Create(TrainingSession trainingSession)
+        public async Task<IActionResult> Create(TrainingSession trainingSession)
         {
             trainingSession.UserId = User.Identity.Name;
 
@@ -71,7 +67,99 @@ namespace GymApp.Controllers
 
 
             return RedirectToAction("Index", "TrainingSession");
-            
+
+        }
+
+
+        [HttpGet]
+        public IActionResult ConfigureSession(int sessionId)
+        {
+            var session = _context.TraningSessions.FirstOrDefault(ts => ts.Id == sessionId);
+
+            if (session == null)
+            {
+                return NotFound();
+            }
+            int trainingId = session.TrainingId;
+
+            // Sprawdź, czy istnieją już rekordy dla danej sesji
+            bool recordsExist = _context.WeightRecords.Any(wr => wr.TrainingSessionId == sessionId);
+
+            if (recordsExist)
+            {
+                TempData["SessionId"] = sessionId;
+                return View("Error");
+            }
+
+            ViewBag.Exercises = _context.TrainingExercises
+                .Include(te => te.Exercise)
+                .Where(te => te.TrainingId == _context.TraningSessions.FirstOrDefault(ts => ts.Id == sessionId).TrainingId)
+                .ToList();
+
+
+            ViewBag.SessionId = sessionId;
+            //ViewBag.Exercises = exercises;
+
+            return View();
+        }
+
+        // Akcja do obsługi przesłanych danych
+        [HttpPost]
+        public async Task<IActionResult> ConfigureSession(int sessionId, List<WeightRecord> weightRecords)
+        {
+            foreach (var record in weightRecords)
+            {
+                record.TrainingSessionId = sessionId;
+                // Dodajemy do bazy danych
+                _context.WeightRecords.Add(record);
+
+            }
+         
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index");
+        }
+
+
+        public IActionResult SessionDetails(int sessionId)
+        {
+            // Pobierz wszystkie rekordy dla danej sesji
+            var weightRecords = _context.WeightRecords
+                .Include(wr => wr.Exercise) 
+                .Where(wr => wr.TrainingSessionId == sessionId)
+                .ToList();
+
+            ViewBag.SessionId = sessionId;
+            return View(weightRecords);
+        }
+
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var trainingSession = await _context.TraningSessions
+                .FirstOrDefaultAsync(ts => ts.Id == id);
+
+            if (trainingSession == null)
+            {
+                return NotFound();
+            }
+
+            // Usuń powiązane WeightRecord
+            var weightRecords = _context.WeightRecords
+                .Where(wr => wr.TrainingSessionId == id)
+                .ToList();
+
+            _context.WeightRecords.RemoveRange(weightRecords);
+
+            // Usuń TrainingSession
+            _context.TraningSessions.Remove(trainingSession);
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index", "TrainingSession");
         }
 
 
