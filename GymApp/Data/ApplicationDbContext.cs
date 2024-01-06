@@ -11,6 +11,7 @@ public class ApplicationDbContext : IdentityDbContext<User, IdentityRole, string
     public DbSet<BodyPart> BodyParts { get; set; }
     public DbSet<Training> Trainings { get; set; }
     public DbSet<TrainingExercises> TrainingExercises { get; set; }
+    public DbSet<TrainingSession> TraningSessions { get; set; }
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)

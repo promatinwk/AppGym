@@ -1,0 +1,23 @@
+﻿@model List<TrainingSession>
+
+<h2>Moje sesje treningowe</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Data sesji</th>
+            <th>Nazwa treningu</th>
+            <!-- Dodaj inne kolumny, jeśli to konieczne -->
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var session in Model)
+        {
+            <tr>
+                <td>@session.SessionDate</td>
+                <td>@session.Training.Name</td>
+                <!-- Dodaj inne komórki, jeśli to konieczne -->
+            </tr>
+        }
+    </tbody>
+</table>
