@@ -9,7 +9,10 @@
         @foreach (var trainingExercise in Model)
         {
             <li>
-                <strong>@trainingExercise.Exercise.Name</strong> - @trainingExercise.SeriesCount serii
+                <span><strong>@trainingExercise.Exercise.Name</strong> - @trainingExercise.SeriesCount serii</span> | <a asp-action="Edit" asp-controller="TrainingExercises" asp-route-id="@trainingExercise.Id">Edytuj</a> | <form asp-action="Delete" asp-controller="TrainingExercises" method="post" class="delete-form">
+    <input type="hidden" name="trainingExerciseId" value="@trainingExercise.Id" />
+    <button type="submit" class="btn btn-link text-danger">Usuń</button>
+</form>|
             </li>
         }
     </ul>

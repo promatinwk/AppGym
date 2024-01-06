@@ -71,7 +71,13 @@ namespace GymApp.Controllers
                         ViewBag.TrainingId = id; // Przekaż id treningu do widoku, aby można było dodać nowe ćwiczenia
 
                         return View(trainingExercises);
-        }
+                  }
+
+       
+
+
+
+
 
 
 

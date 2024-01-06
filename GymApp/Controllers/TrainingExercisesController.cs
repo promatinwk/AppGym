@@ -49,10 +49,61 @@ namespace GymApp.Controllers
 
 
             return RedirectToAction("Create", "TrainingExercises",new { trainingId = trainingExercises.TrainingId });
-           
 
-           
         }
+        public IActionResult Edit(int id)
+        {
+            var trainingExercise = _context.TrainingExercises.Find(id);
+
+            if (trainingExercise == null)
+            {
+                return NotFound();
+            }
+
+            return View(trainingExercise);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,SeriesCount")] TrainingExercises trainingExercise)
+        {
+            if (id != trainingExercise.Id)
+            {
+                return NotFound();
+            }
+      
+             // Update only the SeriesCount property
+              var existingTrainingExercise = _context.TrainingExercises.Find(id);
+                  existingTrainingExercise.SeriesCount = trainingExercise.SeriesCount;
+
+                  _context.Update(existingTrainingExercise);
+                  await _context.SaveChangesAsync();
+               
+              
+                 return RedirectToAction("Details","Training", new { id = trainingExercise.TrainingId });
+            
+
+          
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int trainingExerciseId)
+        {
+            var trainingExercise = await _context.TrainingExercises.FindAsync(trainingExerciseId);
+
+            if (trainingExercise == null)
+            {
+                return NotFound();
+            }
+
+            _context.TrainingExercises.Remove(trainingExercise);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Details", "Training", new { id = trainingExercise.TrainingId });
+        }
+
+
 
     }
 

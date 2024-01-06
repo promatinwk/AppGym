@@ -32,7 +32,10 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Exercise" asp-action="Index">Ćwiczenia</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Training" asp-action="Index">Moje treningi</a>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Training" asp-action="Index">Moje treningi</a>
+                            }
                         </li>
                     </ul>
                     <partial name="_LoginPartial" />

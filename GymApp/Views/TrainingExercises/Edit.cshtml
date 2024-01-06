@@ -1,0 +1,16 @@
+﻿@model GymApp.Models.TrainingExercises
+
+<h2>Zmień ilość serii</h2>
+
+<form asp-action="Edit" asp-controller="TrainingExercises" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div>
+        <label for="SeriesCount">Series Count:</label>
+        <input asp-for="SeriesCount" class="form-control" />
+        <span asp-validation-for="SeriesCount" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="Details" asp-controller="Training" asp-route-id="@Model.TrainingId">Wróć do listy ćwiczeń</a>
+</form>
