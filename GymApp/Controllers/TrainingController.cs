@@ -68,17 +68,17 @@ namespace GymApp.Controllers
                  return View(trainingExercises);
          }
 
-         [HttpPost]
-         [ValidateAntiForgeryToken]
-         public async Task<IActionResult> Delete(int id)
-         {
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
             var training = await _context.Trainings
                         .Include(t => t.TrainingExercises)
                         .FirstOrDefaultAsync(t => t.Id == id);
 
             if (training == null)
             {
-               return NotFound();
+                return NotFound();
             }
 
             // Usuwanie powiązanych TrainingExercises
@@ -89,7 +89,26 @@ namespace GymApp.Controllers
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
-    }
+        }
+
+            [HttpPost]
+            [ValidateAntiForgeryToken]
+            public IActionResult DeleteExercise(int trainingId, int exerciseId)
+            {
+                var trainingExercise = _context.TrainingExercises
+                    .FirstOrDefault(te => te.TrainingId == trainingId && te.ExerciseId == exerciseId);
+
+                if (trainingExercise == null)
+                {
+                    return NotFound();
+                }
+
+                _context.TrainingExercises.Remove(trainingExercise);
+                _context.SaveChanges();
+
+                return RedirectToAction("Details", new { id = trainingId });
+            }
+        
 
        
 

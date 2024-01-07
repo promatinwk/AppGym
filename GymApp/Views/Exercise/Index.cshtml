@@ -7,7 +7,6 @@
         <tr>
             <th>Nazwa ćwiczenia</th>
             <th>Część ciała</th>
-            <th>Rekordzista</th>
         </tr>
     </thead>
     <tbody>
@@ -15,8 +14,7 @@
         {
             <tr>
                 <td>@exercise.Name</td>
-                <td>@exercise.BodyPart.Name</td>
-                <td>@(exercise.RecordHolder != null ? exercise.RecordHolder.Id.ToString() : "N/A")</td>
+                <td>@exercise.BodyPart.Name</td>  
             </tr>
         }
     </tbody>

@@ -17,7 +17,7 @@
                 <label for="WeightRecords[@index].Weight">
                     @record.Exercise.Name | Seria: @j :
                 </label>
-                <input type="number" name="WeightRecords[@index].Weight" required />
+                <input type="number" name="WeightRecords[@index].Weight" required min="0"/>
                 </div>
                 <input type="hidden" name="WeightRecords[@index].TrainingSessionId" value="@ViewBag.SessionId" />
                 <input type="hidden" name="WeightRecords[@index].ExerciseId" value="@record.ExerciseId" />

@@ -130,6 +130,8 @@ namespace GymApp.Controllers
                 .ToList();
 
             ViewBag.SessionId = sessionId;
+            // Dictionary przechowujące najwyższe wagi dla danego ExerciseId i odpowiadające nazwy użytkowników
+      
             return View(weightRecords);
         }
 

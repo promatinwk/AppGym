@@ -5,11 +5,13 @@
 <form asp-action="Create" asp-controller="TrainingExercises" method="post">
     <input type="hidden" name="TrainingId" value="@ViewBag.TrainingId" />
     <div>
-        <label for="exerciseId">Exercise:</label>
-        <select asp-for="ExerciseId" asp-items="new SelectList(ViewBag.Exercises, nameof(Exercise.Id), nameof(Exercise.Name))"></select>
+        <label for="exerciseId">Ćwiczenie:</label>
+        <select asp-for="ExerciseId" asp-items="new SelectList(ViewBag.Exercises, nameof(Exercise.Id), nameof(Exercise.Name))">
+            <option value="">Wybierz ćwiczenie</option>
+        </select>
     </div>
     <div>
-        <label for="seriesCount">Series Count:</label>
+        <label for="seriesCount">Liczba serii:</label>
         <input type="number" asp-for="SeriesCount" />
     </div>
     <div>

@@ -21,7 +21,10 @@
                     <td>@trainingExercise.SeriesCount<span> serii</span></td>
                     <td>
                         <a asp-action="Edit" asp-controller="TrainingExercises" asp-route-id="@trainingExercise.Id">Edytuj</a> |
-                        <a asp-action="Delete" asp-controller="TrainingExercises" asp-route-trainingExerciseId="@trainingExercise.Id" class="delete-link" onclick="return confirm('Czy na pewno chcesz usunąć?')">Usuń</a>
+                        <form asp-action="DeleteExercise" asp-route-trainingId="@ViewBag.TrainingId" asp-route-exerciseId="@trainingExercise.ExerciseId" method="post">
+                            @Html.AntiForgeryToken()
+                            <button type="submit">Usuń</button>
+                        </form>
                     </td>
                 </tr>
             }
