@@ -1,6 +1,16 @@
 Aplikacja GymApp
 Autorzy: Mateusz Nowak & Zbigniew Skrzypczak
 
+Uruchomienie: https://gymapp.hostingasp.pl/
+Aplikacja jest hostowana poprzez portal webio.
+
+Chcąc uruchomić aplikację lokalnie należy zainstalować serwer MySQL.
+Za pomocą programu np.Azure Data Studio utworzyc pustą bazę danych.
+W pliku appsettings.json w węźle ConnectionString analogicznie dodać connectionstring do swojej bazy danych oraz serwera.
+W pliku Program.cs w zmiennej connectionString podmieniamy GymApp na nazwe swojego connectionStringa z appsetings.json.
+W terminalu wywołujemy metodę Update-Database - Po poprawnym zbudowaniu sie bazy danych mozna odpalic aplikację.
+Myślę, że dzięlki hostingowi, nie trzeba tego wykonywać.
+
 
 
 Technologie:
